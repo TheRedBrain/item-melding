@@ -1,31 +1,30 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "mergeditems",
 	"version": "${version}",
-	"name": "Example mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Merged Items",
+	"description": "Adds a way to merge two or more items. Their attribute modifiers will add up.",
 	"authors": [
-		"Me!"
+		"TheRedBrain"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/TheRedBrain/minecrawl"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"license": "MIT",
+	"icon": "assets/mergeditems/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"com.github.theredbrain.mergeditems.MergedItems"
 		],
 		"client": [
-			"com.example.ExampleModClient"
+			"com.github.theredbrain.mergeditems.MergedItemsClient"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
+		"mergeditems.mixins.json",
 		{
-			"config": "modid.client.mixins.json",
+			"config": "mergeditems.client.mixins.json",
 			"environment": "client"
 		}
 	],

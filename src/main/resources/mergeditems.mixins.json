@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.github.theredbrain.mergeditems.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "item.ItemStackMixin",
+    "trinkets.TrinketModifiersMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
