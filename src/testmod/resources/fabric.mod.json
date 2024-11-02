@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "mergeditems_test",
+  "version": "${version}",
+  "name": "Test Mod",
+  "description": "Test Mod for Merged Items",
+  "authors": [],
+  "contact": {},
+  "license": "None",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.theredbrain.mergeditems_test.MergedItemsTest"
+    ],
+    "client": [
+      "com.github.theredbrain.mergeditems_test.MergedItemsTestClient"
+    ]
+  },
+  "mixins": [],
+  "depends": {}
+}

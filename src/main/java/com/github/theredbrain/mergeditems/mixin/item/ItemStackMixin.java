@@ -1,7 +1,7 @@
 package com.github.theredbrain.mergeditems.mixin.item;
 
 import com.github.theredbrain.mergeditems.registry.ItemComponentRegistry;
-import com.github.theredbrain.mergeditems.util.MeldingHelper;
+import com.github.theredbrain.mergeditems.util.MergedAttributeHelper;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -24,8 +24,8 @@ public class ItemStackMixin {
 			cancellable = true
 	)
 	public void applyAttributeModifier(AttributeModifierSlot slot, BiConsumer<RegistryEntry<EntityAttribute>, EntityAttributeModifier> attributeModifierConsumer, CallbackInfo ci) {
-		if (((ItemStack) (Object) this).contains(ItemComponentRegistry.MELDING_COMPONENT_TYPE)) {
-			MeldingHelper.applyMeldedAttributeModifiersForAttributeModifierSlot(((ItemStack) (Object) this), slot, attributeModifierConsumer);
+		if (((ItemStack) (Object) this).contains(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE)) {
+			MergedAttributeHelper.applyMergedAttributeModifiersForAttributeModifierSlot(((ItemStack) (Object) this), slot, attributeModifierConsumer);
 			ci.cancel();
 		}
 	}
@@ -36,8 +36,8 @@ public class ItemStackMixin {
 			cancellable = true
 	)
 	public void applyAttributeModifiers(EquipmentSlot slot, BiConsumer<RegistryEntry<EntityAttribute>, EntityAttributeModifier> attributeModifierConsumer, CallbackInfo ci) {
-		if (((ItemStack) (Object) this).contains(ItemComponentRegistry.MELDING_COMPONENT_TYPE)) {
-			MeldingHelper.applyMeldedAttributeModifiersForEquipmentSlot(((ItemStack) (Object) this), slot, attributeModifierConsumer);
+		if (((ItemStack) (Object) this).contains(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE)) {
+			MergedAttributeHelper.applyMergedAttributeModifiersForEquipmentSlot(((ItemStack) (Object) this), slot, attributeModifierConsumer);
 			ci.cancel();
 		}
 	}

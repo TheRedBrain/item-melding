@@ -1,16 +1,16 @@
 package com.github.theredbrain.mergeditems.registry;
 
 import com.github.theredbrain.mergeditems.MergedItems;
-import com.github.theredbrain.mergeditems.component.type.MeldingComponent;
+import com.github.theredbrain.mergeditems.component.type.MergedItemsComponent;
 import net.minecraft.component.ComponentType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
 public class ItemComponentRegistry {
-	public static final ComponentType<MeldingComponent> MELDING_COMPONENT_TYPE = Registry.register(
+	public static final ComponentType<MergedItemsComponent> MERGED_ITEMS_COMPONENT_TYPE = Registry.register(
 			Registries.DATA_COMPONENT_TYPE,
-			MergedItems.identifier("melding"),
-			ComponentType.<MeldingComponent>builder().codec(MeldingComponent.CODEC).packetCodec(MeldingComponent.PACKET_CODEC).build()
+			MergedItems.identifier("merged_items"),
+			ComponentType.<MergedItemsComponent>builder().codec(MergedItemsComponent.CODEC).packetCodec(MergedItemsComponent.PACKET_CODEC).build()
 	);
 
 	public static void init() {

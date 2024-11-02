@@ -5,11 +5,11 @@ import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 
-public record MeldItemStacksPacket() implements CustomPayload {
-	public static final Id<MeldItemStacksPacket> PACKET_ID = new Id<>(MergedItems.identifier("meld_item_stacks"));
-	public static final PacketCodec<RegistryByteBuf, MeldItemStacksPacket> PACKET_CODEC = PacketCodec.of(MeldItemStacksPacket::write, MeldItemStacksPacket::new);
+public record MergeItemStacksPacket() implements CustomPayload {
+	public static final Id<MergeItemStacksPacket> PACKET_ID = new Id<>(MergedItems.identifier("merge_item_stacks"));
+	public static final PacketCodec<RegistryByteBuf, MergeItemStacksPacket> PACKET_CODEC = PacketCodec.of(MergeItemStacksPacket::write, MergeItemStacksPacket::new);
 
-	public MeldItemStacksPacket(RegistryByteBuf registryByteBuf) {
+	public MergeItemStacksPacket(RegistryByteBuf registryByteBuf) {
 		this();
 	}
 

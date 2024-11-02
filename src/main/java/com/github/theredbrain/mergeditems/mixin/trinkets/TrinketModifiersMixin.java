@@ -1,7 +1,7 @@
 package com.github.theredbrain.mergeditems.mixin.trinkets;
 
 import com.github.theredbrain.mergeditems.registry.ItemComponentRegistry;
-import com.github.theredbrain.mergeditems.util.MeldingHelper;
+import com.github.theredbrain.mergeditems.util.MergedAttributeHelper;
 import com.google.common.collect.Multimap;
 import dev.emi.trinkets.TrinketModifiers;
 import dev.emi.trinkets.api.SlotReference;
@@ -27,8 +27,8 @@ public class TrinketModifiersMixin {
 			cancellable = true
 	)
 	private static void get(ItemStack stack, SlotReference slot, LivingEntity entity, CallbackInfoReturnable<Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier>> cir){
-		if (stack.contains(ItemComponentRegistry.MELDING_COMPONENT_TYPE)) {
-			cir.setReturnValue(MeldingHelper.getMeldedAttributeModifiersForTrinketStack(TrinketsApi.getTrinket(stack.getItem()), stack, slot, entity));
+		if (stack.contains(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE)) {
+			cir.setReturnValue(MergedAttributeHelper.getMergedAttributeModifiersForTrinketStack(TrinketsApi.getTrinket(stack.getItem()), stack, slot, entity));
 			cir.cancel();
 		}
 	}
@@ -39,8 +39,8 @@ public class TrinketModifiersMixin {
 			cancellable = true
 	)
 	private static void get(Trinket trinket, ItemStack stack, SlotReference slot, LivingEntity entity, Identifier slotIdentifier, CallbackInfoReturnable<Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier>> cir){
-		if (stack.contains(ItemComponentRegistry.MELDING_COMPONENT_TYPE)) {
-			cir.setReturnValue(MeldingHelper.getMeldedAttributeModifiersForTrinketStack(trinket, stack, slot, entity));
+		if (stack.contains(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE)) {
+			cir.setReturnValue(MergedAttributeHelper.getMergedAttributeModifiersForTrinketStack(trinket, stack, slot, entity));
 			cir.cancel();
 		}
 	}

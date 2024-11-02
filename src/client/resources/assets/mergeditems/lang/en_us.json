@@ -1,0 +1,12 @@
+{
+  "gui.item_merging.meld_button_label": "Combine",
+  "gui.item_merging.split_button_label": "Split",
+  "gui.item_merging.title": "Item Merging",
+
+  "item.mergeditems.merged_items_component.tooltip.head_line": "Merged Items",
+  "item.mergeditems.merged_items_component.tooltip.entry_suffix": " %s",
+
+  "tag.item.mergeditems.mergable_items_1": "Armor",
+  "tag.item.mergeditems.mergable_items_2": "Main Hand Weapons",
+  "tag.item.mergeditems.mergable_items_3": "Rings"
+}

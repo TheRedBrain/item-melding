@@ -16,12 +16,12 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class MeldingScreenHandler extends ScreenHandler {
+public class ItemMergingScreenHandler extends ScreenHandler {
 
 	private final PlayerInventory playerInventory;
 	private final World world;
-	private final int maxMeldingAmount;
-	private final List<Identifier> meldableItemTags;
+	private final int maxMergedItemsAmount;
+	private final List<Identifier> mergableItemTags;
 	Runnable contentsChangedListener = () -> {
 	};
 	public final Inventory inventory = new SimpleInventory(4) {
@@ -33,40 +33,40 @@ public class MeldingScreenHandler extends ScreenHandler {
 		@Override
 		public void markDirty() {
 			super.markDirty();
-			MeldingScreenHandler.this.onContentChanged(this);
-			MeldingScreenHandler.this.contentsChangedListener.run();
+			ItemMergingScreenHandler.this.onContentChanged(this);
+			ItemMergingScreenHandler.this.contentsChangedListener.run();
 		}
 	};
 
-	public MeldingScreenHandler(int syncId, PlayerInventory playerInventory, MeldingData data) {
-		this(syncId, playerInventory, data.maxMeldingAmount, data.meldableItemTags);
+	public ItemMergingScreenHandler(int syncId, PlayerInventory playerInventory, ItemMergingData data) {
+		this(syncId, playerInventory, data.maxMergedItemsAmount, data.mergableItemTags);
 	}
 
-	public MeldingScreenHandler(int syncId, PlayerInventory playerInventory, int maxMeldingAmount, List<Identifier> meldableItemTags) {
-		super(ScreenHandlerTypesRegistry.MELDING_SCREEN_HANDLER, syncId);
+	public ItemMergingScreenHandler(int syncId, PlayerInventory playerInventory, int maxMergedItemsAmount, List<Identifier> mergableItemTags) {
+		super(ScreenHandlerTypesRegistry.MERGING_ITEMS_SCREEN_HANDLER, syncId);
 		this.playerInventory = playerInventory;
 		this.world = playerInventory.player.getWorld();
-		this.maxMeldingAmount = maxMeldingAmount;
-		this.meldableItemTags = meldableItemTags;
+		this.maxMergedItemsAmount = maxMergedItemsAmount;
+		this.mergableItemTags = mergableItemTags;
 		int i;
 		// hotbar 0 - 8
 		for (i = 0; i < 9; ++i) {
-			this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+			this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142 + 28));
 		}
 		// main inventory 9 - 35
 		for (i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
-				this.addSlot(new Slot(playerInventory, j + (i + 1) * 9, 8 + j * 18, 84 + i * 18));
+				this.addSlot(new Slot(playerInventory, j + (i + 1) * 9, 8 + j * 18, 84 + 28 + i * 18));
 			}
 		}
 		// 36
-		this.addSlot(new Slot(inventory, 0, 16, 27));
+		this.addSlot(new Slot(inventory, 0, 16, 27 + 28));
 		// 37
-		this.addSlot(new Slot(inventory, 1, 62, 27));
+		this.addSlot(new Slot(inventory, 1, 62, 27 + 28));
 		// 38
-		this.addSlot(new Slot(inventory, 2, 98, 27));
+		this.addSlot(new Slot(inventory, 2, 98, 27 + 28));
 		// 39
-		this.addSlot(new Slot(inventory, 3, 144, 27));
+		this.addSlot(new Slot(inventory, 3, 144, 27 + 28));
 
 	}
 
@@ -88,22 +88,22 @@ public class MeldingScreenHandler extends ScreenHandler {
 		}
 	}
 
-	public List<Identifier> getMeldableItemTags() {
-		return this.meldableItemTags;
+	public List<Identifier> getMergableItemTags() {
+		return this.mergableItemTags;
 	}
 
-	public int getMaxMeldingAmount() {
-		return this.maxMeldingAmount;
+	public int getMaxMergedItemsAmount() {
+		return this.maxMergedItemsAmount;
 	}
 
-	public record MeldingData(
-			int maxMeldingAmount,
-			List<Identifier> meldableItemTags
+	public record ItemMergingData(
+			int maxMergedItemsAmount,
+			List<Identifier> mergableItemTags
 	) {
 
-		public static final PacketCodec<RegistryByteBuf, MeldingData> PACKET_CODEC = PacketCodec.of(MeldingData::write, MeldingData::new);
+		public static final PacketCodec<RegistryByteBuf, ItemMergingData> PACKET_CODEC = PacketCodec.of(ItemMergingData::write, ItemMergingData::new);
 
-		public MeldingData(RegistryByteBuf registryByteBuf) {
+		public ItemMergingData(RegistryByteBuf registryByteBuf) {
 			this(
 					registryByteBuf.readInt(),
 					registryByteBuf.readList(Identifier.PACKET_CODEC)
@@ -111,8 +111,8 @@ public class MeldingScreenHandler extends ScreenHandler {
 		}
 
 		private void write(RegistryByteBuf registryByteBuf) {
-			registryByteBuf.writeInt(this.maxMeldingAmount);
-			registryByteBuf.writeCollection(this.meldableItemTags, Identifier.PACKET_CODEC);
+			registryByteBuf.writeInt(this.maxMergedItemsAmount);
+			registryByteBuf.writeCollection(this.mergableItemTags, Identifier.PACKET_CODEC);
 		}
 	}
 }
