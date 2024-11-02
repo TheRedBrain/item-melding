@@ -177,8 +177,8 @@ if (project.hasProperty('release_type')) {
 			relations {
 				requiredDependency 'cloth-config'
 				requiredDependency 'fabric-api'
-				requiredDependency 'slot-customization-api'
-				requiredDependency 'trinkets'
+				optionalDependency 'inventory-size-attributes'
+				optionalDependency 'trinkets'
 			}
 
 			mainArtifact(remapJar)
@@ -209,9 +209,8 @@ if (project.hasProperty('release_type')) {
 			// The type can either be `project` or `version`
 			required.project 'cloth-config'
 			required.project 'fabric-api'
-			embedded.project 'dimlib'
-			required.project 'slot-customization-api'
-			required.project 'trinkets'
+			optional.project 'inventory-size-attributes'
+			optional.project 'trinkets'
 		}
 	}
 
