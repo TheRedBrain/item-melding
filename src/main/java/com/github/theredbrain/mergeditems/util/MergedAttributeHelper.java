@@ -2,7 +2,6 @@ package com.github.theredbrain.mergeditems.util;
 
 import com.github.theredbrain.mergeditems.MergedItems;
 import com.github.theredbrain.mergeditems.component.type.MergedItemsComponent;
-import com.github.theredbrain.mergeditems.registry.ItemComponentRegistry;
 import com.google.common.collect.Multimap;
 import dev.emi.trinkets.api.SlotAttributes;
 import dev.emi.trinkets.api.SlotReference;
@@ -27,7 +26,7 @@ public class MergedAttributeHelper {
 
 	public static Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> getMergedAttributeModifiersForTrinketStack(Trinket trinket, ItemStack itemStack, SlotReference slot, LivingEntity entity) {
 
-		MergedItemsComponent mergedItemsComponent = itemStack.getOrDefault(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT);
+		MergedItemsComponent mergedItemsComponent = itemStack.getOrDefault(MergedItems.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT);
 		TrinketsAttributeModifiersComponent trinketsAttributeModifiersComponent = itemStack.getOrDefault(TrinketsAttributeModifiersComponent.TYPE, TrinketsAttributeModifiersComponent.DEFAULT);
 
 		Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> map = trinket.getModifiers(itemStack, slot, entity, SlotAttributes.getIdentifier(slot)); // empty map
@@ -69,7 +68,7 @@ public class MergedAttributeHelper {
 			}
 		}
 
-		MergedItemsComponent mergedItemsComponent = itemStack.get(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE);
+		MergedItemsComponent mergedItemsComponent = itemStack.get(MergedItems.MERGED_ITEMS_COMPONENT_TYPE);
 		if (mergedItemsComponent != null) {
 			for (ItemStack itemStack1 : mergedItemsComponent.iterate()) {
 				for (AttributeModifiersComponent.Entry entry : itemStack1.getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT).modifiers()) {
@@ -120,7 +119,7 @@ public class MergedAttributeHelper {
 			}
 		}
 
-		MergedItemsComponent mergedItemsComponent = itemStack.get(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE);
+		MergedItemsComponent mergedItemsComponent = itemStack.get(MergedItems.MERGED_ITEMS_COMPONENT_TYPE);
 		if (mergedItemsComponent != null) {
 			for (ItemStack itemStack1 : mergedItemsComponent.iterate()) {
 				for (AttributeModifiersComponent.Entry entry : itemStack1.getOrDefault(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.DEFAULT).modifiers()) {
@@ -161,7 +160,8 @@ public class MergedAttributeHelper {
 		return finalList;
 	}
 
-	public record Entry(RegistryEntry<EntityAttribute> attribute, Identifier id, EntityAttributeModifier.Operation operation, AttributeModifierSlot slot, List<Double> values) {
+	public record Entry(RegistryEntry<EntityAttribute> attribute, Identifier id,
+						EntityAttributeModifier.Operation operation, AttributeModifierSlot slot, List<Double> values) {
 		public Entry addNewValue(Entry entry) {
 			List<Double> newList = new ArrayList<>();
 			newList.addAll(this.values);

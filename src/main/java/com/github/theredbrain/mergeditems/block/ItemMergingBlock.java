@@ -7,8 +7,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -27,6 +25,7 @@ public class ItemMergingBlock extends Block {
 	private final int maxMergedItemsAmount;
 	private final String title;
 	private final List<Identifier> list;
+
 	public ItemMergingBlock(int maxMergedItemsAmount, String title, List<Identifier> list, Settings settings) {
 		super(settings);
 		this.maxMergedItemsAmount = maxMergedItemsAmount;

@@ -1,6 +1,8 @@
 package com.github.theredbrain.mergeditems;
 
 import com.github.theredbrain.inventorysizeattributes.entity.player.DuckPlayerEntityMixin;
+import com.github.theredbrain.mergeditems.component.type.ItemMergingUtilityComponent;
+import com.github.theredbrain.mergeditems.component.type.MergedItemsComponent;
 import com.github.theredbrain.mergeditems.config.ServerConfig;
 import com.github.theredbrain.mergeditems.registry.ItemComponentRegistry;
 import com.github.theredbrain.mergeditems.registry.ScreenHandlerTypesRegistry;
@@ -12,6 +14,7 @@ import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.component.ComponentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandler;
@@ -28,6 +31,9 @@ public class MergedItems implements ModInitializer {
 	public static final String MOD_ID = "mergeditems";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static ServerConfig.GeneralServerConfig generalServerConfig;
+
+	public static ComponentType<MergedItemsComponent> MERGED_ITEMS_COMPONENT_TYPE;
+	public static ComponentType<ItemMergingUtilityComponent> ITEM_MERGING_UTILITY_COMPONENT_TYPE;
 
 	public static final boolean isInventorySizeAttributesLoaded = FabricLoader.getInstance().isModLoaded("inventorysizeattributes");
 

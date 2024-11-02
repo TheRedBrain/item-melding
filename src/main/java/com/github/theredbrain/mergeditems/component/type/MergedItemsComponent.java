@@ -24,7 +24,7 @@ public final class MergedItemsComponent implements TooltipData {
 	}
 
 	public ItemStack get(int index) {
-		return (ItemStack)this.stacks.get(index);
+		return (ItemStack) this.stacks.get(index);
 	}
 
 	public Stream<ItemStack> stream() {
@@ -53,7 +53,7 @@ public final class MergedItemsComponent implements TooltipData {
 		} else if (!(o instanceof MergedItemsComponent)) {
 			return false;
 		} else {
-			MergedItemsComponent mergedItemsComponent = (MergedItemsComponent)o;
+			MergedItemsComponent mergedItemsComponent = (MergedItemsComponent) o;
 			return ItemStack.stacksEqual(this.stacks, mergedItemsComponent.stacks);
 		}
 	}
@@ -101,10 +101,10 @@ public final class MergedItemsComponent implements TooltipData {
 
 		public void add(ItemStack stack) {
 			if (!stack.isEmpty() && !stack.isStackable()) {
-					int j = this.addInternal(stack);
-					if (j != -1) {
-						this.stacks.add(j, stack);
-					}
+				int j = this.addInternal(stack);
+				if (j != -1) {
+					this.stacks.add(j, stack);
+				}
 			}
 		}
 

@@ -1,7 +1,7 @@
 package com.github.theredbrain.mergeditems.network.packet;
 
+import com.github.theredbrain.mergeditems.MergedItems;
 import com.github.theredbrain.mergeditems.component.type.MergedItemsComponent;
-import com.github.theredbrain.mergeditems.registry.ItemComponentRegistry;
 import com.github.theredbrain.mergeditems.screen.ItemMergingScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ public class SplitMergedItemStacksPacketReceiver implements ServerPlayNetworking
 		if (screenHandler instanceof ItemMergingScreenHandler itemMergingScreenHandler) {
 			ItemStack containerItemStack = itemMergingScreenHandler.inventory.getStack(2);
 
-			MergedItemsComponent mergedItemsComponent = containerItemStack.get(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE);
+			MergedItemsComponent mergedItemsComponent = containerItemStack.get(MergedItems.MERGED_ITEMS_COMPONENT_TYPE);
 
 			if (mergedItemsComponent == null) {
 				player.sendMessage(Text.translatable("hud.message.item_merging.no_merged_items"));
@@ -40,7 +40,7 @@ public class SplitMergedItemStacksPacketReceiver implements ServerPlayNetworking
 
 				ItemStack extractedItemStack = builder.removeLast();
 
-				containerItemStack.set(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE, builder.build());
+				containerItemStack.set(MergedItems.MERGED_ITEMS_COMPONENT_TYPE, builder.build());
 				itemMergingScreenHandler.inventory.setStack(3, extractedItemStack);
 			}
 		}

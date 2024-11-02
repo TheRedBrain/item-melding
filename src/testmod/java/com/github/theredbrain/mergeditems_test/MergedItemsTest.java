@@ -2,8 +2,8 @@ package com.github.theredbrain.mergeditems_test;
 
 import com.github.theredbrain.mergeditems.MergedItems;
 import com.github.theredbrain.mergeditems.block.ItemMergingBlock;
+import com.github.theredbrain.mergeditems.component.type.ItemMergingUtilityComponent;
 import com.github.theredbrain.mergeditems.component.type.MergedItemsComponent;
-import com.github.theredbrain.mergeditems.registry.ItemComponentRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.Block;
@@ -32,6 +32,7 @@ public class MergedItemsTest implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static final Identifier MAIN_HAND_PLAYER_ENTITY_INTERACTION_RANGE_MODIFIER_ID = MergedItems.identifier("main_hand_player_entity_interaction_range");
+
 	@Override
 	public void onInitialize() {
 		LOGGER.info("This test was scripted!");
@@ -54,7 +55,8 @@ public class MergedItemsTest implements ModInitializer {
 		}
 		return Registry.register(Registries.ITEM, MergedItemsTest.identifier(name), item);
 	}
-	public static Item[] registerItemSet(String id, String meldableItemTag, AttributeModifiersComponent[] attributeModifiersComponents, RegistryKey<ItemGroup> itemGroup) {
+
+	public static Item[] registerItemSet(String id, String possible_merging_items, AttributeModifiersComponent[] attributeModifiersComponents, RegistryKey<ItemGroup> itemGroup) {
 		if (attributeModifiersComponents.length != 4) {
 			return new Item[]{};
 		}
@@ -62,7 +64,8 @@ public class MergedItemsTest implements ModInitializer {
 				registerItem(id + "_common", new Item(new Item.Settings()
 								.maxCount(1)
 								.rarity(Rarity.COMMON)
-								.component(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT)
+								.component(MergedItems.ITEM_MERGING_UTILITY_COMPONENT_TYPE, new ItemMergingUtilityComponent(possible_merging_items))
+								.component(MergedItems.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT)
 								.attributeModifiers(attributeModifiersComponents[0])
 						),
 						itemGroup
@@ -70,7 +73,7 @@ public class MergedItemsTest implements ModInitializer {
 				registerItem(id + "_uncommon", new Item(new Item.Settings()
 								.maxCount(1)
 								.rarity(Rarity.UNCOMMON)
-								.component(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT)
+								.component(MergedItems.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT)
 								.attributeModifiers(attributeModifiersComponents[1])
 						),
 						itemGroup
@@ -78,7 +81,7 @@ public class MergedItemsTest implements ModInitializer {
 				registerItem(id + "_rare", new Item(new Item.Settings()
 								.maxCount(1)
 								.rarity(Rarity.RARE)
-								.component(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT)
+								.component(MergedItems.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT)
 								.attributeModifiers(attributeModifiersComponents[2])
 						),
 						itemGroup
@@ -86,13 +89,14 @@ public class MergedItemsTest implements ModInitializer {
 				registerItem(id + "_epic", new Item(new Item.Settings()
 								.maxCount(1)
 								.rarity(Rarity.EPIC)
-								.component(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT)
+								.component(MergedItems.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT)
 								.attributeModifiers(attributeModifiersComponents[3])
 						),
 						itemGroup
 				)
 		};
 	}
+
 	//region curved dagger
 	public static final Item[] CURVED_DAGGERS = registerItemSet(
 			"curved_dagger",

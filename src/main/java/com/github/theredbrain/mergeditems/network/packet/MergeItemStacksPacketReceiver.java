@@ -1,8 +1,8 @@
 package com.github.theredbrain.mergeditems.network.packet;
 
+import com.github.theredbrain.mergeditems.MergedItems;
 import com.github.theredbrain.mergeditems.component.type.ItemMergingUtilityComponent;
 import com.github.theredbrain.mergeditems.component.type.MergedItemsComponent;
-import com.github.theredbrain.mergeditems.registry.ItemComponentRegistry;
 import com.github.theredbrain.mergeditems.screen.ItemMergingScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.Item;
@@ -32,12 +32,14 @@ public class MergeItemStacksPacketReceiver implements ServerPlayNetworking.PlayP
 			List<Identifier> identifierList = itemMergingScreenHandler.getMergableItemTags();
 
 			boolean bl = false;
-			for (Identifier identifier : identifierList) {
-				TagKey<Item> itemTagKey = TagKey.of(RegistryKeys.ITEM, identifier);
-				bl = containerItemStack.isIn(itemTagKey);
+			if (!identifierList.isEmpty()) {
+				for (Identifier identifier : identifierList) {
+					TagKey<Item> itemTagKey = TagKey.of(RegistryKeys.ITEM, identifier);
+					bl = containerItemStack.isIn(itemTagKey);
+				}
 			}
 			if (!bl) {
-				player.sendMessage(Text.translatable("hud.message.item_merging.item_can_not_be_merged_into"));
+				player.sendMessage(Text.translatable("hud.message.item_merging.not_allowed_to_merge_items_into", containerItemStack.getName()));
 				return;
 			}
 
@@ -46,24 +48,24 @@ public class MergeItemStacksPacketReceiver implements ServerPlayNetworking.PlayP
 				return;
 			}
 
-			MergedItemsComponent mergedItemsComponentOfMeldedItemStack = mergedItemStack.get(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE);
+			MergedItemsComponent mergedItemsComponentOfMeldedItemStack = mergedItemStack.get(MergedItems.MERGED_ITEMS_COMPONENT_TYPE);
 
 			if (mergedItemsComponentOfMeldedItemStack != null && !mergedItemsComponentOfMeldedItemStack.isEmpty()) {
 				player.sendMessage(Text.translatable("hud.message.item_merging.merged_item_stack_has_items_merged"));
 			}
 
-			MergedItemsComponent mergedItemsComponentOfContainerItemStack = containerItemStack.get(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE);
+			MergedItemsComponent mergedItemsComponentOfContainerItemStack = containerItemStack.get(MergedItems.MERGED_ITEMS_COMPONENT_TYPE);
 
 			if (mergedItemsComponentOfContainerItemStack == null) {
-				player.sendMessage(Text.translatable("hud.message.item_merging.item_can_not_be_merged_into", containerItemStack.getName()));
+				player.sendMessage(Text.translatable("hud.message.item_merging.items_can_not_be_merged_into", containerItemStack.getName()));
 			} else {
 
 				if (mergedItemsComponentOfContainerItemStack.size() >= itemMergingScreenHandler.getMaxMergedItemsAmount()) {
-					player.sendMessage(Text.translatable("hud.message.item_merging.item_has_reached_max_amount_of_merged_items", containerItemStack.getName()));
+					player.sendMessage(Text.translatable("hud.message.item_merging.item_has_reached_current_max_amount_of_merged_items", containerItemStack.getName()));
 					return;
 				}
 
-				ItemMergingUtilityComponent itemMergingUtilityComponent = containerItemStack.get(ItemComponentRegistry.ITEM_MERGING_UTILITY_COMPONENT_TYPE);
+				ItemMergingUtilityComponent itemMergingUtilityComponent = containerItemStack.get(MergedItems.ITEM_MERGING_UTILITY_COMPONENT_TYPE);
 				if (itemMergingUtilityComponent != null) {
 					String possible_merging_items = itemMergingUtilityComponent.possible_merging_items();
 					if (!possible_merging_items.isEmpty() && !mergedItemStack.isIn(TagKey.of(Registries.ITEM.getKey(), Identifier.of(possible_merging_items)))) {
@@ -74,7 +76,7 @@ public class MergeItemStacksPacketReceiver implements ServerPlayNetworking.PlayP
 
 				MergedItemsComponent.Builder builder = new MergedItemsComponent.Builder(mergedItemsComponentOfContainerItemStack);
 				builder.add(mergedItemStack);
-				containerItemStack.set(ItemComponentRegistry.MERGED_ITEMS_COMPONENT_TYPE, builder.build());
+				containerItemStack.set(MergedItems.MERGED_ITEMS_COMPONENT_TYPE, builder.build());
 
 				itemMergingScreenHandler.inventory.setStack(0, ItemStack.EMPTY);
 			}
