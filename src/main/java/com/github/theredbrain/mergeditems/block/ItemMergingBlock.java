@@ -1,17 +1,23 @@
 package com.github.theredbrain.mergeditems.block;
 
-import com.github.theredbrain.mergeditems.MergedItems;
+import com.github.theredbrain.mergeditems.screen.ItemMergingScreenHandler;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -43,8 +49,23 @@ public class ItemMergingBlock extends Block {
 		if (world.isClient) {
 			return ActionResult.SUCCESS;
 		}
-		MergedItems.openItemMergingScreen(player, this.maxMergedItemsAmount, this.title, this.list);
+		player.openHandledScreen(new ExtendedScreenHandlerFactory<>() {
+			@Override
+			public ItemMergingScreenHandler.ItemMergingData getScreenOpeningData(ServerPlayerEntity player) {
+				return new ItemMergingScreenHandler.ItemMergingData(maxMergedItemsAmount, list);
+			}
 
+			@Override
+			public Text getDisplayName() {
+				return Text.translatable(title);
+			}
+
+			@Nullable
+			@Override
+			public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+				return new ItemMergingScreenHandler(syncId, playerInventory, maxMergedItemsAmount, list);
+			}
+		});
 		return ActionResult.CONSUME;
 	}
 }

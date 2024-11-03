@@ -1,10 +1,16 @@
 package com.github.theredbrain.mergeditems;
 
 import com.github.theredbrain.mergeditems.gui.screen.ingame.ItemMergingScreen;
+import com.github.theredbrain.mergeditems.network.packet.OpenItemMergingScreenPacket;
 import com.github.theredbrain.mergeditems.registry.ClientEventsRegistry;
 import com.github.theredbrain.mergeditems.registry.ScreenHandlerTypesRegistry;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.util.Identifier;
+
+import java.util.List;
 
 public class MergedItemsClient implements ClientModInitializer {
 	@Override
@@ -14,4 +20,11 @@ public class MergedItemsClient implements ClientModInitializer {
 
 		ClientEventsRegistry.initializeClientEvents();
 	}
+
+	public static void openItemMergingScreen(MinecraftClient client, int maxMergedItemsAmount, String title, List<Identifier> list) {
+		if (client.player != null) {
+			ClientPlayNetworking.send(new OpenItemMergingScreenPacket(maxMergedItemsAmount, title, list));
+		}
+	}
+
 }
