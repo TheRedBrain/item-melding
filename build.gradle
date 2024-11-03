@@ -46,7 +46,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"item-melding" {
+		"mergeditems" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
@@ -88,7 +88,7 @@ loom {
 	}
 
 	mods {
-		"scriptblocks_test" {
+		"mergeditems_test" {
 			sourceSet sourceSets.testmod
 			sourceSet sourceSets.testmodClient
 		}
