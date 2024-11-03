@@ -20,31 +20,59 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public class MergedAttributeHelper {
 
 	public static Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> getMergedAttributeModifiersForTrinketStack(Trinket trinket, ItemStack itemStack, SlotReference slot, LivingEntity entity) {
 
-		MergedItemsComponent mergedItemsComponent = itemStack.getOrDefault(MergedItems.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT);
-		TrinketsAttributeModifiersComponent trinketsAttributeModifiersComponent = itemStack.getOrDefault(TrinketsAttributeModifiersComponent.TYPE, TrinketsAttributeModifiersComponent.DEFAULT);
-
 		Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> map = trinket.getModifiers(itemStack, slot, entity, SlotAttributes.getIdentifier(slot)); // empty map
-//		if (stack.contains(TrinketsAttributeModifiersComponent.TYPE)) {
-//			for (TrinketsAttributeModifiersComponent.Entry entry : stack.getOrDefault(TrinketsAttributeModifiersComponent.TYPE, TrinketsAttributeModifiersComponent.DEFAULT).modifiers()) {
-//				map.put(entry.attribute(), entry.modifier());
-//			}
-//		}
+		List<TrinketEntry> mergedList = new ArrayList<>();
+
+		List<TrinketsAttributeModifiersComponent.Entry> entryList = itemStack.getOrDefault(TrinketsAttributeModifiersComponent.TYPE, TrinketsAttributeModifiersComponent.DEFAULT).modifiers();
+
+		for (TrinketsAttributeModifiersComponent.Entry entry : entryList) {
+			if (entry.slot().isEmpty() || entry.slot().get().equals(slot.inventory().getSlotType().getId())) {
+				TrinketEntry newEntry = new TrinketEntry(entry.attribute(), entry.modifier().id(), entry.modifier().operation(), entry.slot(), List.of(entry.modifier().value()));
+				for (TrinketEntry entry1 : mergedList) {
+					if (entry1.matches(newEntry)) {
+						newEntry = entry1.addNewValue(newEntry);
+					}
+				}
+				mergedList.add(newEntry);
+			}
+		}
+
+		MergedItemsComponent mergedItemsComponent = itemStack.get(MergedItems.MERGED_ITEMS_COMPONENT_TYPE);
+		if (mergedItemsComponent != null) {
+			for (ItemStack itemStack1 : mergedItemsComponent.iterate()) {
+				for (TrinketsAttributeModifiersComponent.Entry entry : itemStack1.getOrDefault(TrinketsAttributeModifiersComponent.TYPE, TrinketsAttributeModifiersComponent.DEFAULT).modifiers()) {
+					if (entry.slot().isEmpty() || entry.slot().get().equals(slot.inventory().getSlotType().getId())) {
+						TrinketEntry newEntry = new TrinketEntry(entry.attribute(), entry.modifier().id(), entry.modifier().operation(), entry.slot(), List.of(entry.modifier().value()));
+						boolean bl = true;
+						for (int i = 0; i < mergedList.size(); i++) {
+							if (mergedList.get(i).matches(newEntry)) {
+								newEntry = mergedList.get(i).addNewValue(newEntry);
+								mergedList.add(i + 1, newEntry);
+								mergedList.remove(i);
+								bl = false;
+							}
+						}
+						if (bl) {
+							mergedList.add(newEntry);
+						}
+					}
+				}
+			}
+		}
+
+		for (TrinketsAttributeModifiersComponent.Entry entry : getFinalTrinketList(mergedList)) {
+			if (entry.slot().isEmpty() || entry.slot().get().equals(slot.inventory().getSlotType().getId())) {
+				map.put(entry.attribute(), entry.modifier());
+			}
+		}
 		return map;
-//
-//		if (stack.contains(TrinketsAttributeModifiersComponent.TYPE)) {
-//			for (TrinketsAttributeModifiersComponent. Entry entry : stack.getOrDefault(TrinketsAttributeModifiersComponent.TYPE, TrinketsAttributeModifiersComponent.DEFAULT).modifiers()) {
-//				if (entry.slot().isEmpty() || entry.slot().get().equals(slot.inventory().getSlotType().getId())) {
-//					map.put(entry.attribute(), entry.modifier());
-//				}
-//			}
-//		}
-//		return map;
 	}
 
 	public static void applyMergedAttributeModifiersForAttributeModifierSlot(ItemStack itemStack, AttributeModifierSlot slot, BiConsumer<RegistryEntry<EntityAttribute>, EntityAttributeModifier> attributeModifierConsumer) {
@@ -160,8 +188,30 @@ public class MergedAttributeHelper {
 		return finalList;
 	}
 
-	public record Entry(RegistryEntry<EntityAttribute> attribute, Identifier id,
-						EntityAttributeModifier.Operation operation, AttributeModifierSlot slot, List<Double> values) {
+	private static List<TrinketsAttributeModifiersComponent.Entry> getFinalTrinketList(List<TrinketEntry> list) {
+		List<TrinketsAttributeModifiersComponent.Entry> finalList = new ArrayList<>();
+		for (TrinketEntry entry : list) {
+			List<Double> valueList = entry.values;
+			double finalValue = 0.0;
+			if (!valueList.isEmpty()) {
+				double value = 0;
+				for (Double valueListEntry : valueList) {
+					value += valueListEntry;
+				}
+				finalValue = MergedItems.generalServerConfig.merging_averages_similar_modifiers ? (value / valueList.size()) : value;
+			}
+			finalList.add(new TrinketsAttributeModifiersComponent.Entry(entry.attribute, new EntityAttributeModifier(entry.id, finalValue, entry.operation), entry.slot));
+		}
+		return finalList;
+	}
+
+	public record Entry(
+			RegistryEntry<EntityAttribute> attribute,
+			Identifier id,
+			EntityAttributeModifier.Operation operation,
+			AttributeModifierSlot slot,
+			List<Double> values
+	) {
 		public Entry addNewValue(Entry entry) {
 			List<Double> newList = new ArrayList<>();
 			newList.addAll(this.values);
@@ -170,6 +220,25 @@ public class MergedAttributeHelper {
 		}
 
 		public boolean matches(Entry entry) {
+			return entry.attribute.equals(this.attribute) && entry.id.equals(this.id) && entry.operation.equals(this.operation) && entry.slot.equals(this.slot);
+		}
+	}
+
+	public record TrinketEntry(
+			RegistryEntry<EntityAttribute> attribute,
+			Identifier id,
+			EntityAttributeModifier.Operation operation,
+			Optional<String> slot,
+			List<Double> values
+	) {
+		public TrinketEntry addNewValue(TrinketEntry entry) {
+			List<Double> newList = new ArrayList<>();
+			newList.addAll(this.values);
+			newList.addAll(entry.values);
+			return new TrinketEntry(this.attribute, this.id, this.operation, this.slot, newList);
+		}
+
+		public boolean matches(TrinketEntry entry) {
 			return entry.attribute.equals(this.attribute) && entry.id.equals(this.id) && entry.operation.equals(this.operation) && entry.slot.equals(this.slot);
 		}
 	}
