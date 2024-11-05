@@ -12,9 +12,15 @@ Items can optionally define an item tag, which determines what items can be merg
 
 The mod provides a simple block (found in the 'Operator Items' tab in the creative menu) that opens the default 'Item Merging Screen'. This screen allows merging of two items and also splitting merged items.
 
-The default version of the screen that can merge only 2 items together. It allows to merge items into every item with the MergedItemsComponent, however.
+The default version of the screen can merge only 2 items together. It allows to merge items into every item with the MergedItemsComponent, however.
 
 The mod provides a simple API for mods to open customized 'Item Merging Screens'.
 
 The customization options include the maximum amount of merged items in one item, the screen title and a list of item tags, which determine what items can be used as container items.
 The screen also displays which item tags are defined.
+
+## Trinkets Integration
+
+TrinketItems can be merged with other TrinketItems.
+
+> Note, that merging "normal" items with TrinketItems works, but the attributes are not inherited.
