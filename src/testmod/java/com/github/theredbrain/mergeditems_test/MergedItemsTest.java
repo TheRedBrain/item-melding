@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 public class MergedItemsTest implements ModInitializer {
 	public static final String MOD_ID = "mergeditems_test";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final Identifier BASE_MAX_HEALTH_MODIFIER_ID = identifier("base_max_health");
 
 	@Override
 	public void onInitialize() {
@@ -53,6 +54,40 @@ public class MergedItemsTest implements ModInitializer {
 											new EntityAttributeModifier(
 													Item.BASE_ATTACK_SPEED_MODIFIER_ID,
 													-2.0F,
+													EntityAttributeModifier.Operation.ADD_VALUE
+											), AttributeModifierSlot.MAINHAND)
+									.add(EntityAttributes.GENERIC_MAX_HEALTH,
+											new EntityAttributeModifier(
+													BASE_MAX_HEALTH_MODIFIER_ID,
+													2.0F,
+													EntityAttributeModifier.Operation.ADD_VALUE
+											), AttributeModifierSlot.MAINHAND)
+									.build())
+			),
+			ItemGroups.OPERATOR
+	);
+
+	public static Item TEST_ITEM_2 = registerItem("test_item_2", new Item(new Item.Settings()
+					.maxCount(1)
+					.component(MergedItems.MERGED_ITEMS_COMPONENT_TYPE, MergedItemsComponent.DEFAULT)
+					.attributeModifiers(
+							AttributeModifiersComponent.builder()
+									.add(EntityAttributes.GENERIC_ATTACK_DAMAGE,
+											new EntityAttributeModifier(
+													Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,
+													5.0,
+													EntityAttributeModifier.Operation.ADD_VALUE
+											), AttributeModifierSlot.MAINHAND)
+									.add(EntityAttributes.GENERIC_ATTACK_SPEED,
+											new EntityAttributeModifier(
+													Item.BASE_ATTACK_SPEED_MODIFIER_ID,
+													-1.0F,
+													EntityAttributeModifier.Operation.ADD_VALUE
+											), AttributeModifierSlot.MAINHAND)
+									.add(EntityAttributes.GENERIC_MAX_HEALTH,
+											new EntityAttributeModifier(
+													BASE_MAX_HEALTH_MODIFIER_ID,
+													3.0F,
 													EntityAttributeModifier.Operation.ADD_VALUE
 											), AttributeModifierSlot.MAINHAND)
 									.build())

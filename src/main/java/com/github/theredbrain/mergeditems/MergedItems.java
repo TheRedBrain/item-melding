@@ -4,6 +4,7 @@ import com.github.theredbrain.inventorysizeattributes.entity.player.DuckPlayerEn
 import com.github.theredbrain.mergeditems.component.type.ItemMergingUtilityComponent;
 import com.github.theredbrain.mergeditems.component.type.MergedItemsComponent;
 import com.github.theredbrain.mergeditems.config.ServerConfig;
+import com.github.theredbrain.mergeditems.registry.BlockRegistry;
 import com.github.theredbrain.mergeditems.registry.ItemComponentRegistry;
 import com.github.theredbrain.mergeditems.registry.ScreenHandlerTypesRegistry;
 import com.github.theredbrain.mergeditems.registry.ServerPacketRegistry;
@@ -45,6 +46,7 @@ public class MergedItems implements ModInitializer {
 		AutoConfig.register(ServerConfig.class, PartitioningSerializer.wrap(JanksonConfigSerializer::new));
 		generalServerConfig = ((ServerConfig) AutoConfig.getConfigHolder(ServerConfig.class).getConfig()).server;
 
+		BlockRegistry.init();
 		ItemComponentRegistry.init();
 		ScreenHandlerTypesRegistry.registerAll();
 		ServerPacketRegistry.init();

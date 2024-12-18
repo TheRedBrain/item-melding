@@ -31,7 +31,8 @@ public class MergeItemStacksPacketReceiver implements ServerPlayNetworking.PlayP
 
 			List<Identifier> identifierList = itemMergingScreenHandler.getMergableItemTags();
 
-			boolean bl = false;
+			// if no lists are provided, merging all items is possible
+			boolean bl = identifierList.isEmpty();
 			if (!identifierList.isEmpty()) {
 				for (Identifier identifier : identifierList) {
 					TagKey<Item> itemTagKey = TagKey.of(RegistryKeys.ITEM, identifier);
