@@ -8,9 +8,7 @@ import com.github.theredbrain.mergeditems.registry.BlockRegistry;
 import com.github.theredbrain.mergeditems.registry.ItemComponentRegistry;
 import com.github.theredbrain.mergeditems.registry.ScreenHandlerTypesRegistry;
 import com.github.theredbrain.mergeditems.registry.ServerPacketRegistry;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.component.ComponentType;
@@ -22,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class MergedItems implements ModInitializer {
 	public static final String MOD_ID = "mergeditems";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static ServerConfig.GeneralServerConfig generalServerConfig;
+	public static ServerConfig SERVER_CONFIG = ConfigApiJava.registerAndLoadConfig(ServerConfig::new);
 
 	public static ComponentType<MergedItemsComponent> MERGED_ITEMS_COMPONENT_TYPE;
 	public static ComponentType<ItemMergingUtilityComponent> ITEM_MERGING_UTILITY_COMPONENT_TYPE;
@@ -41,10 +39,6 @@ public class MergedItems implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Merging your items since 2024!");
-
-		// Config
-		AutoConfig.register(ServerConfig.class, PartitioningSerializer.wrap(JanksonConfigSerializer::new));
-		generalServerConfig = ((ServerConfig) AutoConfig.getConfigHolder(ServerConfig.class).getConfig()).server;
 
 		BlockRegistry.init();
 		ItemComponentRegistry.init();

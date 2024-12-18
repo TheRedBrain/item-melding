@@ -32,7 +32,7 @@
     "minecraft": "${minecraft_version}",
     "fabricloader": ">=${loader_version}",
     "fabric-api": "*",
-    "cloth-config": ">=${cloth_config_version}",
+    "fzzy_config": ">=${fzzy_config_version}",
     "slotcustomizationapi": ">=${slot_customization_api_version}"
   },
   "suggests": {

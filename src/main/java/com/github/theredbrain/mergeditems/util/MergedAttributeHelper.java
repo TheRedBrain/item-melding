@@ -181,7 +181,7 @@ public class MergedAttributeHelper {
 				for (Double valueListEntry : valueList) {
 					value += valueListEntry;
 				}
-				finalValue = MergedItems.generalServerConfig.merging_averages_similar_modifiers ? (value / valueList.size()) : value;
+				finalValue = MergedItems.SERVER_CONFIG.merging_averages_similar_modifiers.get() ? (value / valueList.size()) : value;
 			}
 			finalList.add(new AttributeModifiersComponent.Entry(entry.attribute, new EntityAttributeModifier(entry.id, finalValue, entry.operation), entry.slot));
 		}
@@ -198,7 +198,7 @@ public class MergedAttributeHelper {
 				for (Double valueListEntry : valueList) {
 					value += valueListEntry;
 				}
-				finalValue = MergedItems.generalServerConfig.merging_averages_similar_modifiers ? (value / valueList.size()) : value;
+				finalValue = MergedItems.SERVER_CONFIG.merging_averages_similar_modifiers.get() ? (value / valueList.size()) : value;
 			}
 			finalList.add(new TrinketsAttributeModifiersComponent.Entry(entry.attribute, new EntityAttributeModifier(entry.id, finalValue, entry.operation), entry.slot));
 		}
