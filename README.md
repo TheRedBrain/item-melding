@@ -6,13 +6,15 @@ The main mechanic of this mod is heavily inspired by the 'Melding' mechanic in t
 
 Values of similar attribute modifiers are averaged. This can be changed to a simple addition in the server config.
 
-Merged items must be unstackable and can't contain merged items.
+Merged items can't be stackable and can't contain merged items.
 
 Items can optionally define an item tag, which determines what items can be merged into them.
 
 The mod provides a simple block (found in the 'Operator Items' tab in the creative menu) that opens the default 'Item Merging Screen'. This screen allows merging of two items and also splitting merged items.
 
 The default version of the screen can merge only 2 items together. It allows to merge items into every item with the MergedItemsComponent, however.
+
+## Custom Item Merging Screens
 
 The mod provides a simple API for mods to open customized 'Item Merging Screens'.
 
