@@ -6,9 +6,16 @@
   "gui.item_merging.title": "Item Merging",
 
   "item.mergeditems.merged_items_component.tooltip.head_line": "Merged Items",
-  "item.mergeditems.merged_items_component.tooltip.entry_suffix": " %s",
+  "item.mergeditems.merged_items_component.tooltip.entry": " %s",
 
-  "tag.item.mergeditems.mergable_items_1": "Armor",
-  "tag.item.mergeditems.mergable_items_2": "Main Hand Weapons",
-  "tag.item.mergeditems.mergable_items_3": "Rings"
+
+  "mergeditems.client": "Client Side Settings",
+
+  "mergeditems.client.show_inactive_inventory_slots": "Show Inactive Slots On Item Merging Screen",
+  "mergeditems.client.show_inactive_inventory_slots.desc": "Inventory Attribute Size Compatibility Setting\n\nWhen set to 'false', inactive slots will not be shown.",
+
+  "mergeditems.server": "Server Side Settings",
+
+  "mergeditems.server.merging_averages_similar_modifiers": "Merging Averages Modifiers",
+  "mergeditems.server.merging_averages_similar_modifiers.desc": "When set to 'false', merging items will add up all their modifiers.\n\nWhen set to 'true', similar modifiers (same id, same slot, same operation) will be averaged."
 }

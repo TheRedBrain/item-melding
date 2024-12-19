@@ -15,9 +15,10 @@ public class ClientEventsRegistry {
 
 			if (mergedItemsComponentOfContainerItemStack != null) {
 				if (!mergedItemsComponentOfContainerItemStack.isEmpty()) {
+					lines.add(Text.empty());
 					lines.add(Text.translatable("item.mergeditems.merged_items_component.tooltip.head_line"));
 					for (ItemStack itemStack : mergedItemsComponentOfContainerItemStack.iterate()) {
-						lines.add(Text.translatable("item.mergeditems.merged_items_component.tooltip.entry_suffix", itemStack.getName()));
+						lines.add(Text.translatable("item.mergeditems.merged_items_component.tooltip.entry", itemStack.getName()));
 					}
 				}
 			}

@@ -1,6 +1,7 @@
 package com.github.theredbrain.mergeditems.gui.screen.ingame;
 
 import com.github.theredbrain.mergeditems.MergedItems;
+import com.github.theredbrain.mergeditems.MergedItemsClient;
 import com.github.theredbrain.mergeditems.network.packet.MergeItemStacksPacket;
 import com.github.theredbrain.mergeditems.network.packet.SplitMergedItemStacksPacket;
 import com.github.theredbrain.mergeditems.screen.ItemMergingScreenHandler;
@@ -100,7 +101,7 @@ public class ItemMergingScreen extends HandledScreen<ItemMergingScreenHandler> {
 		int y = this.y;
 		int k;
 		int m;
-		boolean showInactiveSlots = true;// TODO RPGCraftingClient.clientConfigHolder.getConfig().generalClientConfig.show_inactive_slots;
+		boolean showInactiveSlots = MergedItemsClient.CLIENT_CONFIG.show_inactive_inventory_slots.get();
 
 		context.drawTexture(MERGING_BACKGROUND_TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight, this.backgroundWidth, this.backgroundHeight);
 
