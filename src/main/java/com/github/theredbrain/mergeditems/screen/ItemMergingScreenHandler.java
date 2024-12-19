@@ -21,7 +21,7 @@ public class ItemMergingScreenHandler extends ScreenHandler {
 	private final PlayerInventory playerInventory;
 	private final World world;
 	private final int maxMergedItemsAmount;
-	private final List<Identifier> mergableItemTags;
+	private final List<Identifier> mergeableItemTags;
 	Runnable contentsChangedListener = () -> {
 	};
 	public final Inventory inventory = new SimpleInventory(4) {
@@ -42,12 +42,12 @@ public class ItemMergingScreenHandler extends ScreenHandler {
 		this(syncId, playerInventory, data.maxMergedItemsAmount, data.mergableItemTags);
 	}
 
-	public ItemMergingScreenHandler(int syncId, PlayerInventory playerInventory, int maxMergedItemsAmount, List<Identifier> mergableItemTags) {
+	public ItemMergingScreenHandler(int syncId, PlayerInventory playerInventory, int maxMergedItemsAmount, List<Identifier> mergeableItemTags) {
 		super(ScreenHandlerTypesRegistry.MERGING_ITEMS_SCREEN_HANDLER, syncId);
 		this.playerInventory = playerInventory;
 		this.world = playerInventory.player.getWorld();
 		this.maxMergedItemsAmount = maxMergedItemsAmount;
-		this.mergableItemTags = mergableItemTags;
+		this.mergeableItemTags = mergeableItemTags;
 		int i;
 		// hotbar 0 - 8
 		for (i = 0; i < 9; ++i) {
@@ -88,8 +88,8 @@ public class ItemMergingScreenHandler extends ScreenHandler {
 		}
 	}
 
-	public List<Identifier> getMergableItemTags() {
-		return this.mergableItemTags;
+	public List<Identifier> getMergeableItemTags() {
+		return this.mergeableItemTags;
 	}
 
 	public int getMaxMergedItemsAmount() {

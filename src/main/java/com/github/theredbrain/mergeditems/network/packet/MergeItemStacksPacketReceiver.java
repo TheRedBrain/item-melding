@@ -29,7 +29,17 @@ public class MergeItemStacksPacketReceiver implements ServerPlayNetworking.PlayP
 			ItemStack containerItemStack = itemMergingScreenHandler.inventory.getStack(1);
 			ItemStack mergedItemStack = itemMergingScreenHandler.inventory.getStack(0);
 
-			List<Identifier> identifierList = itemMergingScreenHandler.getMergableItemTags();
+			if (containerItemStack.isEmpty()) {
+				player.sendMessage(Text.translatable("hud.message.item_merging.container_stack_empty"));
+				return;
+			}
+
+			if (mergedItemStack.isEmpty()) {
+				player.sendMessage(Text.translatable("hud.message.item_merging.merged_stack_empty"));
+				return;
+			}
+
+			List<Identifier> identifierList = itemMergingScreenHandler.getMergeableItemTags();
 
 			// if no lists are provided, merging all items is possible
 			boolean bl = identifierList.isEmpty();
@@ -45,14 +55,14 @@ public class MergeItemStacksPacketReceiver implements ServerPlayNetworking.PlayP
 			}
 
 			if (mergedItemStack.getMaxCount() > 1) {
-				player.sendMessage(Text.translatable("hud.message.item_merging.item_can_not_be_merged_into_other_items"));
+				player.sendMessage(Text.translatable("hud.message.item_merging.item_can_not_be_merged_into_other_items", mergedItemStack.getName()));
 				return;
 			}
 
 			MergedItemsComponent mergedItemsComponentOfMeldedItemStack = mergedItemStack.get(MergedItems.MERGED_ITEMS_COMPONENT_TYPE);
 
 			if (mergedItemsComponentOfMeldedItemStack != null && !mergedItemsComponentOfMeldedItemStack.isEmpty()) {
-				player.sendMessage(Text.translatable("hud.message.item_merging.merged_item_stack_has_items_merged"));
+				player.sendMessage(Text.translatable("hud.message.item_merging.merged_item_stack_has_items_merged", mergedItemStack.getName()));
 			}
 
 			MergedItemsComponent mergedItemsComponentOfContainerItemStack = containerItemStack.get(MergedItems.MERGED_ITEMS_COMPONENT_TYPE);

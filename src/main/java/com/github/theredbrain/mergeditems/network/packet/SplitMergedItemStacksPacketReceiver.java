@@ -20,19 +20,24 @@ public class SplitMergedItemStacksPacketReceiver implements ServerPlayNetworking
 		if (screenHandler instanceof ItemMergingScreenHandler itemMergingScreenHandler) {
 			ItemStack containerItemStack = itemMergingScreenHandler.inventory.getStack(2);
 
+			if (containerItemStack.isEmpty()) {
+				player.sendMessage(Text.translatable("hud.message.item_splitting.container_stack_empty"));
+				return;
+			}
+
 			MergedItemsComponent mergedItemsComponent = containerItemStack.get(MergedItems.MERGED_ITEMS_COMPONENT_TYPE);
 
 			if (mergedItemsComponent == null) {
-				player.sendMessage(Text.translatable("hud.message.item_merging.no_merged_items"));
+				player.sendMessage(Text.translatable("hud.message.item_splitting.no_merged_items", containerItemStack.getName()));
 			} else {
 
-				if (!itemMergingScreenHandler.inventory.getStack(3).isEmpty()) {
-					player.sendMessage(Text.translatable("hud.message.item_merging.extract_slot_not_empty"));
+				if (mergedItemsComponent.isEmpty()) {
+					player.sendMessage(Text.translatable("hud.message.item_splitting.no_merged_items"));
 					return;
 				}
 
-				if (mergedItemsComponent.isEmpty()) {
-					player.sendMessage(Text.translatable("hud.message.item_merging.no_merged_items"));
+				if (!itemMergingScreenHandler.inventory.getStack(3).isEmpty()) {
+					player.sendMessage(Text.translatable("hud.message.item_splitting.extract_slot_not_empty"));
 					return;
 				}
 

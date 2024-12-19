@@ -40,7 +40,7 @@ public class ItemMergingScreen extends HandledScreen<ItemMergingScreenHandler> {
 		this.playerEntity = inventory.player;
 		this.hotbarSize = MergedItems.getActiveHotbarSize(inventory.player);
 		this.inventorySize = MergedItems.getActiveInventorySize(inventory.player);
-		this.meldableItemTags = handler.getMergableItemTags();
+		this.meldableItemTags = handler.getMergeableItemTags();
 	}
 
 	@Override
